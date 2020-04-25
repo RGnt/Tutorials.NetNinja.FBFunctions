@@ -25,4 +25,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: dist
-        key: dist
+        path: dist
