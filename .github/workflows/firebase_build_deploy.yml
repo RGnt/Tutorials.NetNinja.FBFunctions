@@ -4,42 +4,42 @@ name: Build and Deploy
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   buildFunctions:
     name: Build Functions
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-    - name: Install Depedencies
-      run: npm install
-      working-directory: functions
-    - name: Build
-      run: npm run build
-      working-directory: functions
-    - name: Archive Production Artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: dist
-        path: dist
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Depedencies
+        run: npm install
+        working-directory: functions
+      - name: Build
+        run: npm run build
+        working-directory: functions
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: functions
+          path: functions
   deployFunctions:
-      name: Deploy Functions
-      needs: buildFunctions
-      runs-on: ubuntu-latest
-      steps:
+    name: Deploy Functions
+    needs: buildFunctions
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
-          name: dist
+          name: functions
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only functions
-        env:
+        env: 
           FIREBASE_TOKEN_ ${{secrets.FIREBASE_CI}}
