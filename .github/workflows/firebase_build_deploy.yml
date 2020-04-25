@@ -9,7 +9,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  buildFunctions:
     name: Build Functions
     runs-on: ubuntu-latest
     steps:
@@ -26,3 +26,20 @@ jobs:
       with:
         name: dist
         path: dist
+  deployFunctions:
+      name: Deploy Functions
+      needs: buildFunctions
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN_ ${{secrets.FIREBASE_CI}}
