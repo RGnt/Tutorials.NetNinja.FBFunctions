@@ -9,23 +9,6 @@ on:
     branches: [master]
 
 jobs:
-  buildFunctions:
-    name: Build Functions
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Install Depedencies
-        run: npm install
-        working-directory: functions
-      - name: Build
-        run: npm run build
-        working-directory: functions
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: dist
   deployFunctions:
     name: Deploy Functions
     needs: buildFunctions
@@ -33,13 +16,9 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: dist
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only functions
+          args: deploy
         env: 
           FIREBASE_TOKEN_ ${{secrets.FIREBASE_CI}}
