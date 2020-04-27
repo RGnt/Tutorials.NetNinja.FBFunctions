@@ -8,4 +8,4 @@ authSwitchLinks.forEach(link => {
     link.addEventListener('click', () => {
         authModals.forEach(modal => modal.classList.toggle('active'))
     });
-})
+});

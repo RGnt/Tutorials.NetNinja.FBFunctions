@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "ninja-cloud-functions-57c9a"
+    "default": "ninja-cloud-functions-57c9a",
+    "dev":"ninja-functions-qa"
   }
 }
